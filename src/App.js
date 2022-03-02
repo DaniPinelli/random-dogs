@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import Select from './components/Select';
 import Card from './components/Card';
 import getDog from './helpers/getDog';
+import Error from './components/Error';
 
 
 const initialDog = {
   image: "",
   breed: {
-    id: 0,
+    id: 1,
     name: ""
   }
 }
@@ -15,6 +16,7 @@ const initialDog = {
 function App() {
   const [dog, setDog] = useState(initialDog);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     updateDog()
@@ -28,6 +30,11 @@ function App() {
         setDog(newDog);
         setLoading(false);
       })
+      .catch(error => {
+        console.log(error);
+        setError("Error obtain dog");
+        setError(false);
+      })
   }
 
   return (
@@ -36,6 +43,7 @@ function App() {
 
       <Select updateDog={updateDog} />
       <Card dog={dog} updateDog={updateDog} loading={loading} />
+      {error && <Error error={error} />}
 
     </div>
   );

@@ -6,13 +6,20 @@ const getDog = async (breedId) => {
 
 
     const res = await fetch(url);
+
+    if (!res.ok) {
+
+        const { url, status, statusText } = res;
+        throw Error(`Error: ${status} ${statusText} in fecht: ${url}`);
+    }
+
     const [data] = await res.json();
 
     const { url: image, breeds: [breed] } = data;
 
     if (!breed) {
         breed = {
-            id: 0,
+            id: 1,
             name: "No Dog"
         }
     }
